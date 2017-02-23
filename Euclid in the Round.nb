@@ -1,0 +1,588 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 10.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     20174,        579]
+NotebookOptionsPosition[     18184,        505]
+NotebookOutlinePosition[     18561,        522]
+CellTagsIndexPosition[     18518,        519]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Euclid in the Round", "Title",
+ CellChangeTimes->{{3.696858114206793*^9, 3.69685812821731*^9}}],
+
+Cell["\<\
+This notebook illustrates and tests some ideas connected with Euclidean \
+distance as a measure of inaccuracy. Specifically, it provides:\
+\>", "Text",
+ CellChangeTimes->{{3.696858167910364*^9, 3.696858254780047*^9}, {
+  3.696858485526375*^9, 3.6968584917952003`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[TextData[{
+ "A function for computing expected inaccuracy in ",
+ StyleBox["N",
+  FontSlant->"Italic"],
+ " dimensions given a measure of inaccuracy."
+}], "Item",
+ CellChangeTimes->{{3.696858257599676*^9, 3.6968582850591087`*^9}, 
+   3.696859649523774*^9}],
+
+Cell["\<\
+A counterexample to the false Conjecture 1 discussed in the accompanying blog \
+post.\
+\>", "Item",
+ CellChangeTimes->{{3.696858257599676*^9, 3.696858334652628*^9}, {
+   3.6968583771730223`*^9, 3.6968583809528017`*^9}, {3.69685842433598*^9, 
+   3.696858427336335*^9}, 3.696859656470029*^9}],
+
+Cell["\<\
+Code for randomly generating examples that test the remaining Conjectures 2 \
+and 3.\
+\>", "Item",
+ CellChangeTimes->{{3.696858257599676*^9, 3.6968583424453297`*^9}, {
+  3.696858391813748*^9, 3.696858474709495*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Calculating Expected Inaccuracy", "Section",
+ CellChangeTimes->{{3.696858136319654*^9, 3.696858141432808*^9}}],
+
+Cell[TextData[{
+ "First we define a function for computing the expected inaccuracy of \
+probability assignment ",
+ StyleBox["q",
+  FontSlant->"Italic"],
+ ", given probability assignment ",
+ StyleBox["p ",
+  FontSlant->"Italic"],
+ "(and a distance function, Euclidean distance in this case):"
+}], "Text",
+ CellChangeTimes->{{3.6968585058069487`*^9, 3.696858606808199*^9}, {
+  3.696858646619969*^9, 3.6968586625961742`*^9}, {3.696858840643194*^9, 
+  3.696858866234243*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"distance", "[", 
+    RowBox[{"v1_", ",", "v2_"}], "]"}], ":=", 
+   RowBox[{"Sqrt", "[", 
+    RowBox[{"Total", "[", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"v1", "-", "v2"}], ")"}], "^", "2"}], "]"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"vertices", "[", "p_", "]"}], ":=", 
+   RowBox[{"IdentityMatrix", "[", 
+    RowBox[{"Length", "[", "p", "]"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"EI", "[", 
+   RowBox[{"p_", ",", "q_"}], "]"}], ":=", 
+  RowBox[{"Total", "[", 
+   RowBox[{"p", "*", 
+    RowBox[{"distance", "[", 
+     RowBox[{"q", ",", 
+      RowBox[{"vertices", "[", "p", "]"}]}], "]"}]}], "]"}]}]}], "Input",
+ CellChangeTimes->{{3.694298229956419*^9, 3.6942982802855787`*^9}, {
+  3.694298340674238*^9, 3.6942984121841908`*^9}, {3.694298722821652*^9, 
+  3.694298722958897*^9}, {3.694299909475893*^9, 3.694299918048452*^9}, {
+  3.694304011344225*^9, 3.6943040124402323`*^9}, {3.6943040466966267`*^9, 
+  3.694304049586896*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["A Counterexample", "Section",
+ CellChangeTimes->{{3.696858685623151*^9, 3.696858688428361*^9}}],
+
+Cell["\<\
+Next we\[CloseCurlyQuote]ll use the above function to verify a counterexample \
+to Conjecture 1:\
+\>", "Text",
+ CellChangeTimes->{{3.6968587304462147`*^9, 3.6968587606724*^9}, {
+  3.696858836531399*^9, 3.696858836861198*^9}, {3.696858886995626*^9, 
+  3.696858888059914*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"p", "=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"3", "/", "7"}], ",", 
+     RowBox[{"2", "/", "7"}], ",", 
+     RowBox[{"2", "/", "7"}]}], "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"p", "'"}], "=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"4", "/", "7"}], ",", 
+     RowBox[{"2", "/", "7"}], ",", 
+     RowBox[{"1", "/", "7"}]}], "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"v1", "=", 
+   RowBox[{"{", 
+    RowBox[{"1", ",", "0", ",", "0"}], "}"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.694298826968535*^9, 3.69429882722346*^9}, {
+   3.694300321418326*^9, 3.69430032338974*^9}, {3.69430391852102*^9, 
+   3.694303922347763*^9}, {3.696858704824485*^9, 3.696858706611039*^9}, 
+   3.696858813566669*^9}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"EI", "[", 
+   RowBox[{"p", ",", "p"}], "]"}], "//", "N"}]], "Input",
+ CellChangeTimes->{{3.694298810498633*^9, 3.694298815118668*^9}}],
+
+Cell[BoxData["0.8031549891545913`"], "Output",
+ CellChangeTimes->{
+  3.6968587898730707`*^9, 3.6968589330108767`*^9, {3.696859553404614*^9, 
+   3.696859593500682*^9}, {3.696859923393777*^9, 3.696859967352396*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"EI", "[", 
+   RowBox[{"p", ",", 
+    RowBox[{"p", "'"}]}], "]"}], "//", "N"}]], "Input",
+ CellChangeTimes->{{3.694298795563883*^9, 3.694298807142515*^9}}],
+
+Cell[BoxData["0.7990425123312921`"], "Output",
+ CellChangeTimes->{
+  3.696858789808394*^9, 3.696858933065504*^9, {3.6968595534600143`*^9, 
+   3.6968595935552197`*^9}, {3.6968599234340763`*^9, 3.696859967389613*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"EI", "[", 
+   RowBox[{"p", ",", "v1"}], "]"}], "//", "N"}]], "Input",
+ CellChangeTimes->{{3.694298820792963*^9, 3.694298832692048*^9}, {
+   3.696858715134721*^9, 3.696858715234432*^9}, 3.69685881670212*^9}],
+
+Cell[BoxData["0.8081220356417687`"], "Output",
+ CellChangeTimes->{
+  3.696858789918792*^9, 3.696858933132029*^9, {3.696859553510372*^9, 
+   3.696859593605788*^9}, {3.69685992350047*^9, 3.6968599674405117`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"EI", "[", 
+   RowBox[{"p", ",", 
+    RowBox[{"p", "'"}]}], "]"}], "<", 
+  RowBox[{"EI", "[", 
+   RowBox[{"p", ",", "p"}], "]"}], "<", 
+  RowBox[{"EI", "[", 
+   RowBox[{"p", ",", "v1"}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.696858910542163*^9, 3.696858922533474*^9}}],
+
+Cell[BoxData["True"], "Output",
+ CellChangeTimes->{
+  3.69685893318218*^9, {3.6968595535599823`*^9, 3.6968595936558723`*^9}, {
+   3.69685992356022*^9, 3.696859967497919*^9}}]
+}, Open  ]],
+
+Cell[TextData[{
+ "If the extreme assignment ",
+ Cell[BoxData[
+  FormBox[
+   SubscriptBox["v", "1"], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ " isn\[CloseCurlyQuote]t the minimum point here, what is? Asking for an \
+exact answer seems to take forever, so we\[CloseCurlyQuote]ll settle for a \
+numerical approximation:"
+}], "Text",
+ CellChangeTimes->{{3.696858944513562*^9, 3.696859032173798*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"NMinimize", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"EI", "[", 
+      RowBox[{"p", ",", 
+       RowBox[{"{", 
+        RowBox[{"q1", ",", "q2", ",", "q3"}], "}"}]}], "]"}], ",", 
+     RowBox[{"q1", ">", "0"}], ",", 
+     RowBox[{"q2", ">", "0"}], ",", 
+     RowBox[{"q3", ">", "0"}], ",", 
+     RowBox[{
+      RowBox[{"q1", "+", "q2", "+", "q3"}], "\[Equal]", "1"}]}], "}"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{"q1", ",", "q2", ",", "q3"}], "}"}]}], "\[IndentingNewLine]", 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.696688209093149*^9, 3.696688246384305*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"0.7921519010802481`", ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"q1", "\[Rule]", "0.6546536706316696`"}], ",", 
+     RowBox[{"q2", "\[Rule]", "0.17267316466663835`"}], ",", 
+     RowBox[{"q3", "\[Rule]", "0.172673164701692`"}]}], "}"}]}], 
+  "}"}]], "Output",
+ CellChangeTimes->{{3.696688227738921*^9, 3.696688246843678*^9}, 
+   3.696858790005232*^9, 3.6968590430943413`*^9, {3.696859553643774*^9, 
+   3.696859593739819*^9}, {3.696859923640399*^9, 3.696859967578806*^9}}]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Two Conjectures", "Section",
+ CellChangeTimes->{{3.6968590709074593`*^9, 3.696859073771244*^9}}],
+
+Cell["Our conjectures are:", "Text",
+ CellChangeTimes->{{3.696859116553968*^9, 3.696859122554944*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+Repeatedly minimizing expected inaccuracy will, eventually, lead to a \
+probability assignment greater than 1/2 in the/a possibility that was most \
+probable initially.\
+\>", "ItemNumbered",
+ CellChangeTimes->{{3.696859142175696*^9, 3.696859180364551*^9}, {
+  3.696859686531415*^9, 3.696859687640531*^9}}],
+
+Cell["\<\
+When one of the possibilities has probability greater than 1/2, minimizing \
+expected inaccuracy then leads in one step to probability 1 in that \
+possibility.\
+\>", "ItemNumbered",
+ CellChangeTimes->{{3.696859142175696*^9, 3.696859227575876*^9}}]
+}, Open  ]],
+
+Cell[TextData[{
+ "The following code creates random tests of these conjectures. First it \
+generates a random probability assignment of length ",
+ StyleBox["n",
+  FontSlant->"Italic"],
+ ". Then it repeatedly minimizes expected inaccuracy five times.\n\nIf all \
+goes well, the result should be expected inaccuracy 0, and an extreme \
+probability assignment ",
+ StyleBox["q ",
+  FontSlant->"Italic"],
+ "that assigns certainty to the possibility ",
+ StyleBox["p",
+  FontSlant->"Italic"],
+ " rated most probable initially.\n\nNB: this code is currently set up for \
+four dimensions. For higher dimensions you have to extend the code within \
+NMinimize accordingly. Just add variables ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    SubscriptBox["q", "5"], ",", 
+    SubscriptBox["q", "6"]}], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ ", etc. and corresponding constraints.\n\nAlso, the code currently tries \
+just five iterations, which seems to be sufficient for most 4-dimensional \
+cases. But you may need to change the 5 in the last line to something larger \
+for some cases, especially if trying a large number of dimensions."
+}], "Text",
+ CellChangeTimes->{{3.6968592323915443`*^9, 3.696859544726676*^9}, {
+  3.6968596015360537`*^9, 3.6968596241872463`*^9}, {3.696859982769079*^9, 
+  3.6968600206305532`*^9}, {3.696860051608685*^9, 3.696860226083419*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"function", " ", 
+    RowBox[{"defn", ":", " ", 
+     RowBox[{
+     "randomly", " ", "generate", " ", "a", " ", "probability", " ", 
+      "assignment", " ", "of", " ", "length", " ", "n"}]}]}], " ", "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"randomP", "[", "n_", "]"}], ":=", 
+    RowBox[{"Module", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"{", "l", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"l", "=", 
+        RowBox[{"RandomReal", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"0", ",", "1"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"1", ",", "n"}], "}"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"Flatten", "[", "l", "]"}], "/", 
+        RowBox[{"Total", "[", 
+         RowBox[{"Flatten", "[", "l", "]"}], "]"}]}]}]}], 
+     "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+    "Generate", " ", "a", " ", "random", " ", "assignment", " ", "of", " ", 
+     "length", " ", "4"}], " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{"p", "=", 
+    RowBox[{"randomP", "[", "4", "]"}]}], " ", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+    "Minimize", " ", "EI", " ", "for", " ", "five", " ", "iterations"}], " ", 
+    "*)"}], "\[IndentingNewLine]", 
+   RowBox[{"Do", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"result", "=", 
+       RowBox[{"NMinimize", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"EI", "[", 
+            RowBox[{"p", ",", 
+             RowBox[{"{", 
+              RowBox[{"q1", ",", "q2", ",", "q3", ",", "q4"}], "}"}]}], "]"}],
+            ",", 
+           RowBox[{"q1", ">", "0"}], ",", 
+           RowBox[{"q2", ">", "0"}], ",", 
+           RowBox[{"q3", ">", "0"}], ",", 
+           RowBox[{"q4", ">", "0"}], ",", 
+           RowBox[{
+            RowBox[{"q1", "+", "q2", "+", "q3", "+", "q4"}], "\[Equal]", 
+            "1"}]}], "}"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"{", 
+          RowBox[{"q1", ",", "q2", ",", "q3", ",", "q4"}], "}"}]}], 
+        "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Print", "[", "result", "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"p", "=", 
+       RowBox[{"result", "[", 
+        RowBox[{"[", 
+         RowBox[{"2", ",", "All", ",", "2"}], "]"}], "]"}]}], ";"}], 
+     "\[IndentingNewLine]", ",", 
+     RowBox[{"{", 
+      RowBox[{"i", ",", "5"}], "}"}]}], "\[IndentingNewLine]", 
+    "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.6942990160719337`*^9, 3.694299114339979*^9}, {
+   3.6942991988884163`*^9, 3.694299277747909*^9}, {3.694299426878606*^9, 
+   3.6942994531904497`*^9}, {3.694299523914483*^9, 3.6942995355113773`*^9}, {
+   3.694299639119828*^9, 3.6942997481265087`*^9}, {3.6942998425138493`*^9, 
+   3.694299859789942*^9}, {3.694299994172822*^9, 3.6943000642416553`*^9}, {
+   3.694300101907543*^9, 3.6943001893819313`*^9}, {3.694300442343471*^9, 
+   3.6943004460556726`*^9}, 3.694301041688314*^9, {3.694301109209886*^9, 
+   3.694301121008562*^9}, {3.694301290949439*^9, 3.6943013019193068`*^9}, {
+   3.694302130005352*^9, 3.69430214114187*^9}, {3.6943023726323967`*^9, 
+   3.6943023853226347`*^9}, {3.69430274219938*^9, 3.694302769064809*^9}, {
+   3.694302850306731*^9, 3.694302850433161*^9}, {3.694302907082767*^9, 
+   3.694302907264636*^9}, {3.6968595695239067`*^9, 3.6968595830692997`*^9}, {
+   3.696859790128314*^9, 3.69685991249089*^9}, {3.696860241776868*^9, 
+   3.6968602465316563`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+  "0.29657806016450355`", ",", "0.21898919919873333`", ",", 
+   "0.17596081414384357`", ",", "0.30847192649291943`"}], "}"}]], "Output",
+ CellChangeTimes->{{3.694302834958012*^9, 3.694302911188408*^9}, 
+   3.694303925570552*^9, 3.694304015221137*^9, {3.694304052657053*^9, 
+   3.694304059642515*^9}, 3.6968590833158293`*^9, {3.69685955370751*^9, 
+   3.6968595938050632`*^9}, 3.696859889042235*^9, {3.6968599236750402`*^9, 
+   3.6968599676233883`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"0.8560878269826415`", ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"q1", "\[Rule]", "0.3118391148204144`"}], ",", 
+     RowBox[{"q2", "\[Rule]", "0.1982190184202572`"}], ",", 
+     RowBox[{"q3", "\[Rule]", "0.15139952948957242`"}], ",", 
+     RowBox[{"q4", "\[Rule]", "0.33854233726975597`"}]}], "}"}]}], 
+  "}"}]], "Print",
+ CellChangeTimes->{{3.694302835052476*^9, 3.6943029115720367`*^9}, 
+   3.6943039256382093`*^9, 3.694304015293867*^9, {3.6943040527752523`*^9, 
+   3.6943040597448387`*^9}, 3.696859083417551*^9, {3.6968595538044987`*^9, 
+   3.6968595938958807`*^9}, 3.696859889130157*^9, {3.696859923785305*^9, 
+   3.69685996773172*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"0.846223798517878`", ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"q1", "\[Rule]", "0.31818662433475486`"}], ",", 
+     RowBox[{"q2", "\[Rule]", "0.16766486560406246`"}], ",", 
+     RowBox[{"q3", "\[Rule]", "0.12243795293870535`"}], ",", 
+     RowBox[{"q4", "\[Rule]", "0.39171055712247727`"}]}], "}"}]}], 
+  "}"}]], "Print",
+ CellChangeTimes->{{3.694302835052476*^9, 3.6943029115720367`*^9}, 
+   3.6943039256382093`*^9, 3.694304015293867*^9, {3.6943040527752523`*^9, 
+   3.6943040597448387`*^9}, 3.696859083417551*^9, {3.6968595538044987`*^9, 
+   3.6968595938958807`*^9}, 3.696859889130157*^9, {3.696859923785305*^9, 
+   3.696859967829487*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"0.8238643753605569`", ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"q1", "\[Rule]", "0.25857299665097844`"}], ",", 
+     RowBox[{"q2", "\[Rule]", "0.11834298657292328`"}], ",", 
+     RowBox[{"q3", "\[Rule]", "0.08392803804800268`"}], ",", 
+     RowBox[{"q4", "\[Rule]", "0.5391559787280956`"}]}], "}"}]}], 
+  "}"}]], "Print",
+ CellChangeTimes->{{3.694302835052476*^9, 3.6943029115720367`*^9}, 
+   3.6943039256382093`*^9, 3.694304015293867*^9, {3.6943040527752523`*^9, 
+   3.6943040597448387`*^9}, 3.696859083417551*^9, {3.6968595538044987`*^9, 
+   3.6968595938958807`*^9}, 3.696859889130157*^9, {3.696859923785305*^9, 
+   3.6968599679463*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"0.6517318672280346`", ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"q1", "\[Rule]", "5.955566151349956`*^-9"}], ",", 
+     RowBox[{"q2", "\[Rule]", "5.174703103929811`*^-9"}], ",", 
+     RowBox[{"q3", "\[Rule]", "0.`"}], ",", 
+     RowBox[{"q4", "\[Rule]", "0.9999999888697307`"}]}], "}"}]}], 
+  "}"}]], "Print",
+ CellChangeTimes->{{3.694302835052476*^9, 3.6943029115720367`*^9}, 
+   3.6943039256382093`*^9, 3.694304015293867*^9, {3.6943040527752523`*^9, 
+   3.6943040597448387`*^9}, 3.696859083417551*^9, {3.6968595538044987`*^9, 
+   3.6968595938958807`*^9}, 3.696859889130157*^9, {3.696859923785305*^9, 
+   3.696859968283721*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"1.5741751632313916`*^-8", ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"q1", "\[Rule]", 
+      RowBox[{"-", "6.238343175368755`*^-13"}]}], ",", 
+     RowBox[{"q2", "\[Rule]", "5.863377320745637`*^-13"}], ",", 
+     RowBox[{"q3", "\[Rule]", "5.863377320745637`*^-13"}], ",", 
+     RowBox[{"q4", "\[Rule]", "0.9999999999994511`"}]}], "}"}]}], 
+  "}"}]], "Print",
+ CellChangeTimes->{{3.694302835052476*^9, 3.6943029115720367`*^9}, 
+   3.6943039256382093`*^9, 3.694304015293867*^9, {3.6943040527752523`*^9, 
+   3.6943040597448387`*^9}, 3.696859083417551*^9, {3.6968595538044987`*^9, 
+   3.6968595938958807`*^9}, 3.696859889130157*^9, {3.696859923785305*^9, 
+   3.696859968621201*^9}}]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{1118, 1261},
+WindowMargins->{{Automatic, 518}, {18, Automatic}},
+Magnification->1.5,
+FrontEndVersion->"10.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (June 27, \
+2014)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 101, 1, 137, "Title"],
+Cell[684, 25, 278, 5, 76, "Text"],
+Cell[CellGroupData[{
+Cell[987, 34, 259, 7, 43, "Item"],
+Cell[1249, 43, 300, 6, 43, "Item"],
+Cell[1552, 51, 225, 5, 43, "Item"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[1814, 61, 116, 1, 95, "Section"],
+Cell[1933, 64, 471, 12, 76, "Text"],
+Cell[2407, 78, 1053, 29, 94, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[3497, 112, 101, 1, 95, "Section"],
+Cell[3601, 115, 284, 6, 46, "Text"],
+Cell[3888, 123, 793, 23, 94, "Input"],
+Cell[CellGroupData[{
+Cell[4706, 150, 169, 4, 43, "Input"],
+Cell[4878, 156, 213, 3, 43, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[5128, 164, 189, 5, 43, "Input"],
+Cell[5320, 171, 215, 3, 43, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[5572, 179, 241, 5, 43, "Input"],
+Cell[5816, 186, 210, 3, 43, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[6063, 194, 305, 9, 43, "Input"],
+Cell[6371, 205, 174, 3, 43, "Output"]
+}, Open  ]],
+Cell[6560, 211, 408, 10, 77, "Text"],
+Cell[CellGroupData[{
+Cell[6993, 225, 651, 18, 119, "Input"],
+Cell[7647, 245, 518, 11, 43, "Output"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[8214, 262, 102, 1, 95, "Section"],
+Cell[8319, 265, 102, 1, 46, "Text"],
+Cell[CellGroupData[{
+Cell[8446, 270, 315, 6, 72, "ItemNumbered"],
+Cell[8764, 278, 257, 5, 72, "ItemNumbered"]
+}, Open  ]],
+Cell[9036, 286, 1367, 29, 373, "Text"],
+Cell[CellGroupData[{
+Cell[10428, 319, 3710, 86, 519, "Input"],
+Cell[14141, 407, 491, 9, 43, "Output"],
+Cell[CellGroupData[{
+Cell[14657, 420, 687, 14, 30, "Print"],
+Cell[15347, 436, 689, 14, 30, "Print"],
+Cell[16039, 452, 687, 14, 30, "Print"],
+Cell[16729, 468, 676, 14, 39, "Print"],
+Cell[17408, 484, 724, 15, 39, "Print"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
